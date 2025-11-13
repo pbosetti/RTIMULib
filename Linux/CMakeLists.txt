@@ -32,23 +32,58 @@ IF(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     MESSAGE(FATAL_ERROR "Prevented in-tree built. This is bad practice.")
 ENDIF(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
+execute_process(
+  COMMAND git rev-parse --is-inside-work-tree
+  WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+  OUTPUT_VARIABLE IS_GIT_REPO
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_QUIET
+)
+if(IS_GIT_REPO STREQUAL "true")
+  # Get the latest tag
+  execute_process(
+    COMMAND git describe --tags --dirty
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    OUTPUT_VARIABLE GIT_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+  )
+  if(GIT_TAG MATCHES "^[vV]([0-9]+)\\.([0-9]+)\\.([0-9]+)(.*)?")
+    string(REGEX REPLACE "^[vV]([0-9]+)\\.([0-9]+)\\.([0-9]+)(.*)?" "\\1" CPACK_PACKAGE_VERSION_MAJOR "${GIT_TAG}")
+    string(REGEX REPLACE "^[vV]([0-9]+)\\.([0-9]+)\\.([0-9]+)(.*)?" "\\2" CPACK_PACKAGE_VERSION_MINOR "${GIT_TAG}")
+    string(REGEX REPLACE "^[vV]([0-9]+)\\.([0-9]+)\\.([0-9]+)(.*)?" "\\3" CPACK_PACKAGE_VERSION_PATCH "${GIT_TAG}")
+    message(STATUS "Project root is a git repository, using version from latest tag: ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+  else()
+    message(WARNING "Latest git tag does not match vMAJOR.MINOR.PATCH format, using default version. Tag is: ${GIT_TAG}")
+    set(CPACK_PACKAGE_VERSION_MAJOR 0)
+    set(CPACK_PACKAGE_VERSION_MINOR 0)
+    set(CPACK_PACKAGE_VERSION_PATCH 1)
+  endif()
+else()
+  message(WARNING "Project root is NOT a git repository, using default version")
+  set(CPACK_PACKAGE_VERSION_MAJOR 0)
+  set(CPACK_PACKAGE_VERSION_MINOR 0)
+  set(CPACK_PACKAGE_VERSION_PATCH 1)
+  set(GIT_TAG "vUNKNOWN_GIT_VERSION")
+endif()
+
 INCLUDE(CMakeDependentOption)
 INCLUDE(FeatureSummary)
 
 ########################################################################
 # Project setup
 ########################################################################
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 PROJECT(RTIMULib CXX)
 ENABLE_TESTING()
 
-OPTION(BUILD_GL "Build RTIMULibGL" ON)
+OPTION(BUILD_GL "Build RTIMULibGL" OFF)
 OPTION(BUILD_DRIVE "Build RTIMULibDrive" ON)
 OPTION(BUILD_DRIVE10 "Build RTIMULibDrive10" ON)
 OPTION(BUILD_DRIVE11 "Build RTIMULibDrive11" ON)
 OPTION(BUILD_CAL "Build RTIMULibCal" ON)
-OPTION(BUILD_DEMO "Build RTIMULibDemo" ON)
-CMAKE_DEPENDENT_OPTION(BUILD_DEMOGL "Build RTIMULibDemoGL" ON
+OPTION(BUILD_DEMO "Build RTIMULibDemo" OFF)
+CMAKE_DEPENDENT_OPTION(BUILD_DEMOGL "Build RTIMULibDemoGL" OFF
                        "BUILD_GL" OFF)
 
 ADD_FEATURE_INFO(RTIMULibGL BUILD_GL "")
@@ -94,6 +129,24 @@ IF(BUILD_DEMOGL)
     ADD_SUBDIRECTORY(RTIMULibDemoGL)
 ENDIF(BUILD_DEMOGL)
 
-PRINT_ENABLED_FEATURES()
+FEATURE_SUMMARY(WHAT ENABLED_FEATURES DESCRIPTION "Enabled features:")
+
+
+IF(UNIX)
+    # Packaging
+    SET(CPACK_PACKAGE_NAME RTIMULib)
+    SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${GIT_TAG}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+    SET(CPACK_PACKAGE_VENDOR "RTIMULib Developers")
+    SET(CPACK_PACKAGE_DIRECTORY ${CMAKE_SOURCE_DIR}/../packages)
+    SET(CPACK_STRIP_FILES TRUE)
+    SET(CPACK_PACKAGING_INSTALL_PREFIX "/usr/local")
+    SET(CPACK_PACKAGE_CONTACT "paolo.bosetti@unitn.it")
+    SET(CMAKE_PROJECT_HOMEPAGE_URL "https://github.com/RTIMULib/RTIMULib")
+    SET(CPACK_PACKAGE_DESCRIPTION "RTIMULib installer: a library for interfacing with IMU sensors")
+    SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/../LICENSE")
+    SET(CPACK_DEBIAN_PACKAGE_NAME RTIMULib)
+    SET(CPACK_GENERATOR "DEB")
+    INCLUDE(CPack)
+ENDIF(UNIX)
 
 MESSAGE(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
