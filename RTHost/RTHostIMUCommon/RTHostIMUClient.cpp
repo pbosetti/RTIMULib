@@ -23,7 +23,7 @@
 
 
 #include "RTHostIMUClient.h"
-#include "RTIMUSettings.h"
+#include "../../RTIMULib/RTIMUSettings.h"
 
 #include "RTArduLinkUtils.h"
 

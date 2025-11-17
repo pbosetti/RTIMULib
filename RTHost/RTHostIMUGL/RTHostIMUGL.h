@@ -33,7 +33,7 @@
 
 #include "ui_RTHostIMUGL.h"
 
-#include "RTIMULib.h"
+#include "./../RTIMULib/RTIMULib.h"
 
 //  Display type codes
 

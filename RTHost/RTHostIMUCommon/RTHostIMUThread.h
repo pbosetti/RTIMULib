@@ -28,7 +28,7 @@
 #include <QThread>
 #include <qmutex.h>
 
-#include "RTIMULib.h"
+#include "./../RTIMULib/RTIMULib.h"
 
 class RTHostIMUThread : public QObject
 {

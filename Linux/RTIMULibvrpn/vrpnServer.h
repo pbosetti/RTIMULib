@@ -61,7 +61,7 @@
 #include "vrpn_Text.h"
 #include "vrpn_Tracker.h"
 
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 class trackerVrpnServer : public vrpn_Tracker
 {

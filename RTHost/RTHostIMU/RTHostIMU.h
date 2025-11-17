@@ -34,7 +34,7 @@
 
 #include "ui_RTHostIMU.h"
 
-#include "RTIMULib.h"
+#include "../RTIMULib/RTIMULib.h"
 
 class RTHostIMUThread;
 

@@ -22,7 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 int main()
 {

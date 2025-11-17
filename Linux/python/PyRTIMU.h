@@ -26,7 +26,7 @@
 
 #include <Python.h>
 #include "structmember.h"
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 // RTIMUSettings Type
 struct RTIMU_Settings {

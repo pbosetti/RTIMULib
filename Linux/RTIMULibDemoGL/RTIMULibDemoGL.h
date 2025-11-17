@@ -31,7 +31,7 @@
 
 #include "ui_RTIMULibDemoGL.h"
 
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 //  Display type codes
 

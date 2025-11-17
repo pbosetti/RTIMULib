@@ -30,7 +30,7 @@
 
 #include "ui_RTIMULibDemo.h"
 
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 class IMUThread;
 

@@ -24,8 +24,8 @@
 #ifndef MAGCALDLG_H
 #define MAGCALDLG_H
 
-#include "RTIMULib.h"
-#include "RTIMUCalDefs.h"
+#include "../../RTIMULib/RTIMULib.h"
+#include "../../RTIMULib/RTIMUCalDefs.h"
 
 #include <qdialog.h>
 #include <qlabel.h>

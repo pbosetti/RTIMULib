@@ -22,7 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "SelectIMUDlg.h"
-#include "RTIMUSettings.h"
+#include "../../RTIMULib/RTIMUSettings.h"
 #include "IMUDrivers/RTIMUDefs.h"
 
 #include <QFormLayout>

@@ -22,7 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "MagCalDlg.h"
-#include "RTIMUMagCal.h"
+#include "../../RTIMULib/RTIMUMagCal.h"
 
 #include <qboxlayout.h>
 #include <qgridlayout.h>

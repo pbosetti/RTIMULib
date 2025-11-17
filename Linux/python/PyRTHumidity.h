@@ -26,7 +26,7 @@
 
 #include <Python.h>
 #include "structmember.h"
-#include "RTIMULib.h"
+#include "../../RTIMULib/RTIMULib.h"
 
 // RTHumidity Type
 struct RTIMU_RTHumidity {

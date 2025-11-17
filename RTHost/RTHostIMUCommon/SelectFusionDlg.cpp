@@ -23,8 +23,8 @@
 
 
 #include "SelectFusionDlg.h"
-#include "RTIMUSettings.h"
-#include "RTFusion.h"
+#include "../../RTIMULib/RTIMUSettings.h"
+#include "../../RTIMULib/RTFusion.h"
 
 #include <QFormLayout>
 #include <QLabel>

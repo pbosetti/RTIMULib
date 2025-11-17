@@ -22,9 +22,9 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "AccelCalDlg.h"
-#include "RTIMUAccelCal.h"
+#include "../../RTIMULib/RTIMUAccelCal.h"
 #include "RTIMUSettings.h"
-
+    
 #include <qboxlayout.h>
 #include <qgridlayout.h>
 #include <qdialogbuttonbox.h>
